@@ -46,7 +46,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     private Vec3Impl downlinkCoord;
-    private MTEDroneCentre center;
+    private MTEDroneStation center;
     private final Set<DroneConnection> connections = new HashSet<>();
     private final Set<MTEMultiBlockBase> machines = new HashSet<>();
 
@@ -99,7 +99,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             getBaseMetaTileEntity().getYCoord(),
             getBaseMetaTileEntity().getZCoord());
 
-        tryFindDroneCenter();
+        tryFindDroneStation();
     }
 
     @Override
@@ -112,7 +112,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
             // if we don't have a connection to a center, search for one every 10s
             if (center == null && aTick % 200 == 0) {
-                tryFindDroneCenter();
+                tryFindDroneStation();
             }
 
             if (hasConnection() && center.getBaseMetaTileEntity()
@@ -154,7 +154,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
         if (side == aBaseMetaTileEntity.getFrontFacing()) {
             if (aPlayer instanceof FakePlayer) return false;
             if (!hasConnection()) {
-                aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.noconnection"));
+                aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.DroneStation.noconnection"));
                 return true;
             }
             openGui(aPlayer);
@@ -199,14 +199,14 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     /**
      * Find a drone center. This will search for all DC in the same dimension, then find one in range.
      */
-    private void tryFindDroneCenter() {
-        if (MTEDroneCentre.getCentreMap()
+    private void tryFindDroneStation() {
+        if (MTEDroneStation.getCentreMap()
             .containsKey(getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
-            List<MTEDroneCentre> target = MTEDroneCentre.getCentreMap()
+            List<MTEDroneStation> target = MTEDroneStation.getCentreMap()
                 .get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
                 .stream()
                 .collect(Collectors.toList());
-            for (MTEDroneCentre centre : target) {
+            for (MTEDroneStation centre : target) {
                 if (centre.getCoords()
                     .withinDistance(this.downlinkCoord, centre.getRange())
                     && centre.getBaseMetaTileEntity()

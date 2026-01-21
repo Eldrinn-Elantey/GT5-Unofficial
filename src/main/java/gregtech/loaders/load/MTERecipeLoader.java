@@ -3465,7 +3465,7 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { " S ", "CMC", "RRR", 'M', ItemList.Hatch_Maintenance, 'S', ItemList.Sensor_IV, 'R',
                 new ItemStack(GregTechAPI.sBlockReinforced, 1, 9), 'C', ItemList.Conveyor_Module_EV });
 
-        // And Drone Centre
+        // And Drone Station
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_Assembler.get(1),
@@ -3477,7 +3477,7 @@ public class MTERecipeLoader implements Runnable {
                 ItemList.Cover_WirelessNeedsMaintainance.get(1),
                 GalacticraftCore.isModLoaded() ? GTModHandler.getModItem(GalacticraftCore.ID, "item.basicItem", 1, 19)
                     : ItemList.Sensor_EV.get(4))
-            .itemOutputs(ItemList.Machine_Multi_DroneCentre.get(1L))
+            .itemOutputs(ItemList.Machine_Multi_DroneStation.get(1L))
             .fluidInputs(Materials.GlueAdvanced.getFluid(8_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)

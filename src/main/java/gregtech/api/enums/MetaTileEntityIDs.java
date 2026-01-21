@@ -822,7 +822,7 @@ public enum MetaTileEntityIDs {
     RECIPE_FILTER_UV(9338),
     RECIPE_FILTER_UHV(9339),
     INDUSTRIAL_APIARY(9399),
-    Drone_Centre(9400),
+    Drone_Station(9400),
     DroneDownLink(9401),
     PURIFICATION_PLANT_CONTROLLER(9402),
     PURIFICATION_UNIT_CLARIFIER(9403),

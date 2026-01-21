@@ -2150,7 +2150,7 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_TranscendentPlasmaMixer,
     Cover_Metrics_Transmitter,
     NC_AdvancedSensorCard,
-    Machine_Multi_DroneCentre,
+    Machine_Multi_DroneStation,
     TierdDrone0,
     TierdDrone1,
     TierdDrone2,

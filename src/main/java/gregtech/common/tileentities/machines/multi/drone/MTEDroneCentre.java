@@ -88,11 +88,11 @@ import gregtech.common.items.ItemTierDrone;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentre> implements ISurvivalConstructable {
+public class MTEDroneStation extends MTEExtendedPowerMultiBlockBase<MTEDroneStation> implements ISurvivalConstructable {
 
-    private static final IIconContainer ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_ACTIVE");
-    private static final IIconContainer FACE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_FACE");
-    private static final IIconContainer INACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_INACTIVE");
+    private static final IIconContainer ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_STATION_ACTIVE");
+    private static final IIconContainer FACE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_STATION_FACE");
+    private static final IIconContainer INACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_STATION_INACTIVE");
     public static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 2);
     private final int MACHINE_LIST_WINDOW_ID = 10;
     private final int CUSTOM_NAME_WINDOW_ID = 11;
@@ -108,10 +108,10 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     private List<DroneConnection> connectionList = new ArrayList<>();
     public HashMap<String, String> tempNameList = new HashMap<>();
     // Save centre by dimID
-    private static final HashMultimap<Integer, MTEDroneCentre> droneMap = HashMultimap.create();
+    private static final HashMultimap<Integer, MTEDroneStation> droneMap = HashMultimap.create();
     // spotless off
-    private static final IStructureDefinition<MTEDroneCentre> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEDroneCentre>builder()
+    private static final IStructureDefinition<MTEDroneStation> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEDroneStation>builder()
         .addShape(
             "main",
             transpose(
@@ -121,27 +121,27 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                     { "C   C", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "C   C" } }))
         .addElement(
             'C',
-            buildHatchAdder(MTEDroneCentre.class).atLeast(InputBus)
+            buildHatchAdder(MTEDroneStation.class).atLeast(InputBus)
                 .casingIndex(CASING_INDEX)
                 .hint(1)
-                .buildAndChain(onElementPass(MTEDroneCentre::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 2))))
+                .buildAndChain(onElementPass(MTEDroneStation::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 2))))
         .addElement('A', chainAllGlasses())
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 11))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings4, 0))
         .build();
 
     // spotless on
-    public MTEDroneCentre(String name) {
+    public MTEDroneStation(String name) {
         super(name);
     }
 
-    public MTEDroneCentre(int ID, String Name, String NameRegional) {
+    public MTEDroneStation(int ID, String Name, String NameRegional) {
         super(ID, Name, NameRegional);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEDroneCentre(super.mName);
+        return new MTEDroneStation(super.mName);
     }
 
     @Override
@@ -171,7 +171,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     @Override
-    public IStructureDefinition<MTEDroneCentre> getStructureDefinition() {
+    public IStructureDefinition<MTEDroneStation> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -183,7 +183,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Drone Centre")
+        tt.addMachineType("Drone Station")
             .addInfo(EnumChatFormatting.AQUA + "Drone #10032, cleared for takeoff!")
             .addInfo("Monitors multiblock machines in range")
             .addInfo("Replace maintenance hatch on other multi with drone downlink module")
@@ -241,7 +241,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         useRender = !useRender;
         aPlayer.addChatComponentMessage(
             new ChatComponentTranslation(
-                "GT5U.machines.dronecentre." + (useRender ? "enableRender" : "disableRender")));
+                "GT5U.machines.DroneStation." + (useRender ? "enableRender" : "disableRender")));
         if (useRender) {
             createRenderBlock();
         } else {
@@ -502,7 +502,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                             widget.getContext()
                                 .getPlayer()
                                 .addChatComponentMessage(
-                                    new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
+                                    new ChatComponentTranslation("GT5U.machines.DroneStation.shutdown"));
                             return;
                         }
                         for (DroneConnection mte : connectionList) {
@@ -511,7 +511,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                         }
                         widget.getContext()
                             .getPlayer()
-                            .addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.turnon"));
+                            .addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.DroneStation.turnon"));
                         widget.getContext()
                             .getPlayer()
                             .closeScreen();
@@ -534,7 +534,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                             widget.getContext()
                                 .getPlayer()
                                 .addChatComponentMessage(
-                                    new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
+                                    new ChatComponentTranslation("GT5U.machines.DroneStation.shutdown"));
                             return;
                         }
                         for (DroneConnection mte : connectionList) {
@@ -543,7 +543,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                         }
                         widget.getContext()
                             .getPlayer()
-                            .addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.turnoff"));
+                            .addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.DroneStation.turnoff"));
                         widget.getContext()
                             .getPlayer()
                             .closeScreen();
@@ -732,7 +732,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                         .ifPresent(machine -> {
                             if (!getBaseMetaTileEntity().isActive()) {
                                 player.addChatComponentMessage(
-                                    new ChatComponentTranslation("GT5U.machines.dronecentre.shutdown"));
+                                    new ChatComponentTranslation("GT5U.machines.DroneStation.shutdown"));
                                 return;
                             }
                             if (machine.isAllowedToWork()) {
@@ -888,7 +888,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         BlockPosHighlighter.highlightBlocks(player, Collections.singletonList(blockPos), null, null);
     }
 
-    public static HashMultimap<Integer, MTEDroneCentre> getCentreMap() {
+    public static HashMultimap<Integer, MTEDroneStation> getCentreMap() {
         return droneMap;
     }
 

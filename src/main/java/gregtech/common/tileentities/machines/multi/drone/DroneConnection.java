@@ -25,11 +25,11 @@ public class DroneConnection {
     MTEMultiBlockBase machine;
     ItemStack machineItem;
     ChunkCoordinates machineCoord;
-    MTEDroneCentre centre;
+    MTEDroneStation centre;
     ChunkCoordinates centreCoord;
     World world;
 
-    public DroneConnection(MTEMultiBlockBase machine, MTEDroneCentre centre) {
+    public DroneConnection(MTEMultiBlockBase machine, MTEDroneStation centre) {
         this.machine = machine;
         this.machineItem = machine.getStackForm(1);
         machineCoord = machine.getBaseMetaTileEntity()
@@ -62,7 +62,7 @@ public class DroneConnection {
             centreTag.getInteger("x"),
             centreTag.getInteger("y"),
             centreTag.getInteger("z"));
-        this.centre = (MTEDroneCentre) getLoadedGT_BaseMachineAt(centreCoord, world, true);
+        this.centre = (MTEDroneStation) getLoadedGT_BaseMachineAt(centreCoord, world, true);
         this.customName = aNBT.getString("name");
         this.unlocalizedName = aNBT.getString("unlocalizedName");
     }
